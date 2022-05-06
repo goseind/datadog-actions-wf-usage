@@ -28,7 +28,7 @@ jobs:
       - name: GitHub API Request
         run: |
           curl \
-          -H "Authorization: token ${{ secrets.PAT }}" \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
           https://api.github.com/repos/goseind/datadog-gh-actions/actions/workflows/25581452/timing
 
       # Runs a set of commands using the runners shell
