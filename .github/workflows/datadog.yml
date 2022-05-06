@@ -28,7 +28,7 @@ jobs:
       - name: GitHub API Request
         run: |
           curl --request GET \
-          --url https://api.github.com/repos/datadog-gh-actions/actions/actions/workflows/datadog.yml/timing \
+          --url https://api.github.com/repos/goseind/datadog-gh-actions/actions/workflows/datadog.yml/timing \
           --header 'authorization: token ${{ secrets.GITHUB_TOKEN }}'
 
       # Runs a set of commands using the runners shell
