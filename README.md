@@ -30,9 +30,9 @@ Problems to solve (see also coomments ins workflow yml file):
 
 ## Useful links
 
-https://github.com/marketplace/actions/github-api-request
-https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
-https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_run
-https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
-https://docs.datadoghq.com/api/latest/metrics/#submit-metrics
-https://docs.datadoghq.com/api/latest/?code-lang=python
+* https://github.com/marketplace/actions/github-api-request
+* https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+* https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_run
+* https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+* https://docs.datadoghq.com/api/latest/metrics/#submit-metrics
+* https://docs.datadoghq.com/api/latest/?code-lang=python
