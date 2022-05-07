@@ -1,37 +1,100 @@
-# This is a basic workflow to help you get started with Actions
+name: GitHub Minutes Report
 
-name: Datadog
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # runs when one of the defined wfs are completed
+  workflow_run:
+    workflows: [Datadog, Test WF] # To do: Get all workflows from Repo and include them here
+    types:
+      - completed
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+env:
+  # Actions secrets in repo settings
+  DD_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+  DD_APP_KEY: ${{ secrets.DATADOG_APPLICATION_KEY }}
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "datadog"
-  datadog:
-    # The type of runner that the job will run on
+  # This step gets the timing for each wf via GitHub API request
+  updateWorkflowTimings:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    env:
+      WF: datadog.yml # To do: Get all workflows from Repo and execute API request for all of them
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Get latest timing from GitHub API
+        uses: octokit/request-action@v2.1.0
+        id: get_latest_timing
+        with:
+          route: GET /repos/${{ github.repository }}/actions/workflows/${{ env.WF }}/timing
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo latest timing for ${{ env.WF }}: ${{ steps.get_latest_timing.outputs.billable.UBUNTU.total_ms }}" # Problem: Workflow succeeds but value is not shown in console
+
       - uses: actions/checkout@v3
+      - name: Configure custom metric in Datadog (using python)
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - run: |
+          python -m pip install --upgrade pip
+          pip install datadog-api-client
+          DD_SITE="datadoghq.com" DD_API_KEY="${DD_API_KEY}" DD_APP_KEY="${DD_APP_KEY}" python "datadog_api_tagconfig.py"
+          DD_SITE="datadoghq.com" DD_API_KEY="${DD_API_KEY}" python "datadog_api_submit.py"
 
-      - name: GitHub API Request
+      # Option using curl --> currently not working --> {"errors": ["Forbidden"]} and 
+      - name: Configure custom metric in Datadog (using curl)
+        id: custom_metric_config
+        #env:
+        #  metric_name: github_actions
         run: |
-          curl \
-          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-          https://api.github.com/repos/goseind/datadog-gh-actions/actions/workflows/25581452/timing
-
-      # Runs a set of commands using the runners shell
-      - name: Send to Datadog API
+          # Path parameters
+          export metric_name="gh.test"
+          # Curl command
+          curl -X POST "https://api.datadoghq.com/api/v2/metrics/${metric_name}/tags" \
+          -H "Content-Type: application/json" \
+          -H "DD-API-KEY: ${DD_API_KEY}" \
+          -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
+          -d @- << EOF
+          {
+            "data": {
+              "attributes": {
+                "aggregations": [
+                  {
+                    "space": "sum",
+                    "time": "sum"
+                  }
+                ],
+                "metric_type": "count",
+                "tags": [
+                  "app",
+                  "datacenter"
+                ]
+              },
+              "id": "test.metric.latency",
+              "type": "manage_tags"
+            }
+          }
+          EOF
+      - name: Post latest timing to Datatdog
+        id: post_latest_timing
+        env:
+          latest_total_ms: 20000 # To do: Change to variable from previous step --> steps.get_latest_timing.outputs.billable.UBUNTU.total_ms
         run: |
-          echo "Works!?"
+          ## Dynamic Points
+          # Post time-series data that can be graphed on Datadog’s dashboards.
+          # Template variables
+          export NOW="$(date +%s)"
+          # Curl command
+          curl -X POST "https://api.datadoghq.com/api/v1/series" \
+          -H "Content-Type: text/json" \
+          -H "DD-API-KEY: ${DD_API_KEY}" \
+          -d @- << EOF
+          {
+            "series": [
+              {
+                "metric": "test.metric",
+                "points": [[${NOW}, 5000]],
+                "type": "count"
+              }
+            ]
+          }
+          EOF
+        # {"status": "ok"} --> but not data arrives in datadog
