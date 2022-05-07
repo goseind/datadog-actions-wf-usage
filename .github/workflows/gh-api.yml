@@ -12,10 +12,35 @@ jobs:
     env:
       WF: datadog.yml # To do: Get all workflows from Repo and execute API request for all of them
     steps:
-      - uses: octokit/request-action@v2.1.0
+      - name: Get latest timing from GitHub API
+        uses: octokit/request-action@v2.1.0
         id: get_latest_timing
         with:
           route: GET /repos/${{ github.repository }}/actions/workflows/${{ env.WF }}/timing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo latest timing for ${{ env.WF }}: ${{ steps.get_latest_timing.outputs.billable.UBUNTU.total_ms }}"
+      - run: "echo latest timing for ${{ env.WF }}: ${{ steps.get_latest_timing.outputs.billable.UBUNTU.total_ms }}" # Problem: Workflow succeeds but value is not shown in console
+      - name: Post latest timing to Datatdog
+        id: post_latest_timing
+        env:
+          DD_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+          latest_total_ms: 20000 # To do: Change to variable from previous step --> steps.get_latest_timing.outputs.billable.UBUNTU.total_ms
+        run: |
+          ## Dynamic Points
+          # Post time-series data that can be graphed on Datadog’s dashboards.
+          # Template variables
+          export NOW="$(date +%s)"
+          # Curl command
+          curl -X POST "https://api.datadoghq.com/api/v1/series" \
+          -H "Content-Type: text/json" \
+          -H "DD-API-KEY: ${DD_API_KEY}" \
+          -d @- << EOF
+          {
+            "series": [
+              {
+                "metric": "system.load.1",
+                "points": [[${NOW}, 1234.5]]
+              }
+            ]
+          }
+          EOF
