@@ -16,7 +16,7 @@ jobs:
       - uses: octokit/request-action@v2.1.0
         id: get_latest_timing
         with:
-          route: GET /repos/${{ GITHUB_REPOSITORY }/actions/workflows/${{ WF }/timing
+          route: GET /repos/${{ GITHUB_REPOSITORY }}/actions/workflows/${{ WF }}/timing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo latest timing for { $WF }: ${{ steps.get_latest_timing.outputs.data }}"
