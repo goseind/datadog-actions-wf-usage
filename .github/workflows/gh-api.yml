@@ -26,8 +26,8 @@ jobs:
       - run: "echo latest timing for ${{ env.WF }}: ${{ steps.get_latest_timing.outputs.billable.UBUNTU.total_ms }}" # Problem: Workflow succeeds but value is not shown in console
       - name: Configure custom metric in Datadog
         id: custom_metric_config
-        env:
-          metric_name: github_actions
+        #env:
+         # metric_name: github_actions
         run: |
           # Path parameters
           export metric_name="dist.http.endpoint.request"
