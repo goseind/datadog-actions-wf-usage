@@ -30,7 +30,7 @@ jobs:
          # metric_name: github_actions
         run: |
           # Path parameters
-          export metric_name="dist.http.endpoint.request"
+          export metric_name="gh.test"
           # Curl command
           curl -X POST "https://api.datadoghq.com/api/v2/metrics/${metric_name}/tags" \
           -H "Content-Type: application/json" \
@@ -74,8 +74,9 @@ jobs:
           {
             "series": [
               {
-                "metric": "test.metric.latency",
-                "points": [[${NOW}, 5000]]
+                "metric": "test.metric",
+                "points": [[${NOW}, 5000]],
+                "type": "count"
               }
             ]
           }
