@@ -36,6 +36,7 @@ jobs:
       - run: |
           python -m pip install --upgrade pip
           pip install datadog-api-client
+          DD_SITE="datadoghq.com" DD_API_KEY="${DD_API_KEY}" DD_APP_KEY="${DD_APP_KEY}" python "datadog_api_tagconfig.py"
           DD_SITE="datadoghq.com" DD_API_KEY="${DD_API_KEY}" python "datadog_api_submit.py"
 
       # Option using curl --> currently not working --> {"errors": ["Forbidden"]} and 
