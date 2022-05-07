@@ -18,4 +18,4 @@ jobs:
           route: GET /repos/${{ github.repository }}/actions/workflows/${{ env.WF }}/timing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo latest timing for ${{ env.WF }}: ${{ steps.get_latest_timing.outputs }}"
+      - run: "echo latest timing for ${{ env.WF }}: ${{ steps.get_latest_timing.outputs.billable.UBUNTU }}"
