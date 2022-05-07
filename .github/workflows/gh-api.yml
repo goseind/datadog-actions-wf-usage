@@ -10,12 +10,13 @@ jobs:
   updateWorkflowTimings:
     runs-on: ubuntu-latest
     env:
+      GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
       WF: datadog.yml # To do: Get all workflows from Repo and execute API request for all of them
     steps:
       - uses: octokit/request-action@v2.1.0
         id: get_latest_timing
         with:
-          route: GET /repos/${ GITHUB_REPOSITORY }/actions/workflows/${{ env.WF }}/timing
+          route: GET /repos/${{ env.GITHUB_REPOSITORY }}/actions/workflows/${{ env.WF }}/timing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo latest timing for { $WF }: ${{ steps.get_latest_timing.outputs.data }}"
