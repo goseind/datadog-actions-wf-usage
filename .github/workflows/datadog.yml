@@ -32,11 +32,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install datadog-api-client
       - run: |
-          DD_SITE="datadoghq.eu"
-          DD_API_KEY="$DD_API_KEY"
-          DD_APP_KEY="$DD_APP_KEY"
-          python "datadog_api_tagconfig.py"
-          python "datadog_api_submit.py"
+          DD_SITE="datadoghq.eu" DD_API_KEY="$DD_API_KEY" DD_APP_KEY="$DD_APP_KEY" python3 "datadog_api_tagconfig.py"
+          DD_SITE="datadoghq.eu" DD_API_KEY="$DD_API_KEY" python3 "datadog_api_submit.py"
         env:
           # Actions secrets in repo settings
           DD_API_KEY: ${{ secrets.DATADOG_API_KEY }}
