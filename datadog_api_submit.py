@@ -12,7 +12,7 @@ from datadog_api_client.v1.model.series import Series
 body = MetricsPayload(
     series=[
         Series(
-            metric="system.load.1",
+            metric="github.actions.minutes",
             type="gauge",
             points=[
                 Point(
@@ -23,7 +23,7 @@ body = MetricsPayload(
                 ),
             ],
             tags=[
-                "test:ExampleSubmitmetricsreturnsPayloadacceptedresponse",
+                "test:GitHubActionsMinutesReport",
             ],
         ),
     ],
