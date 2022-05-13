@@ -24,7 +24,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Output data from API Request
-        run: "echo latest timing for ${{ matrix.WFs }}: ${{ steps.get_latest_timing.outputs.billable.UBUNTU.total_ms }}" # Problem: Workflow succeeds but value is not shown in console
+        run: echo ${{ steps.get_latest_timing.outputs.billable.UBUNTU.total_ms }} # Problem: Workflow succeeds but value is not shown in console
 
       - name: Post latest timing to Datatdog
         id: post_latest_timing
@@ -43,7 +43,7 @@ jobs:
               {
                 "metric": "github.actions.minutes",
                 "points": [[${NOW}, $latest_total_ms_ubuntu]],
-                "tags": "$tag_workflow_id"
+                "tags": "workflow:$tag_workflow_id"
               }
             ]
           }
