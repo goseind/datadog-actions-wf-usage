@@ -39,7 +39,7 @@ jobs:
               {
                 "metric": "github.actions.minutes",
                 "points": [[${NOW}, $latest_total_ms_ubuntu]],
-                "tags": "wf:$tag_workflow_id",
+                "tags": "workflow:$tag_workflow_id",
                 "type": "gauge"
               }
             ]
