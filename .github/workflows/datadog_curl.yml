@@ -24,7 +24,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Output data from API Request
-        run: echo ${{ steps.get_latest_timing.outputs }} # Problem: Workflow succeeds but value is not shown in console
+        run: echo ${{ fromJSON(steps.get_latest_timing.outputs) }} # Problem: Workflow succeeds but value is not shown in console
 
       - name: Post latest timing to Datatdog
         id: post_latest_timing
