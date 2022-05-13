@@ -31,7 +31,7 @@ jobs:
         run: |
          output=$(curl \
          -H "Accept: application/vnd.github.v3+json" \
-         -H "Authorization: token $PAT" 
+         -H "Authorization: token $PAT" \
          https://api.github.com/repos/OWNER/REPO/actions/workflows/WORKFLOW_ID/timing)
          echo $output
         env:
