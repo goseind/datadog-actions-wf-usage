@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        Workflows: [test.yml, another_test.yml]
+        WFs: [test.yml, another_test.yml]
     #env:
       #WF: "test.yml" # To do: Get all workflows from Repo and execute API request for all of them
     steps:
@@ -21,12 +21,12 @@ jobs:
         uses: octokit/request-action@v2.1.0
         id: get_latest_timing
         with:
-          route: GET /repos/${{ github.repository }}/actions/workflows/${{ env.WF }}/timing
+          route: GET /repos/${{ github.repository }}/actions/workflows/${{ matrix.WFs }}/timing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Output data from API Request
-        run: "echo latest timing for ${{ env.WF }}: ${{ steps.get_latest_timing.outputs.billable.UBUNTU.total_ms }}" # Problem: Workflow succeeds but value is not shown in console
+        run: "echo latest timing for ${{ matrix.WFs }}: ${{ steps.get_latest_timing.outputs.billable.UBUNTU.total_ms }}" # Problem: Workflow succeeds but value is not shown in console
 
       - name: Post latest timing to Datatdog
         id: post_latest_timing
