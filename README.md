@@ -1,10 +1,10 @@
-# Datadog Custom Metric GitHub Actions Minutes
+# Datadog Custom Metric for GitHub Actions Minutes
 
-GitHub Action Workflow to send GitHub Actions Minutes Usage to custom metric on Datadog trough its API.
+GitHub Action Workflow to send GitHub Actions Minutes Usage to Custom Metric on Datadog.
 
-# To do
+# Implementation
 
-Refer to workflow [GitHub Minutes Report](.github/workflows/datadog.yml): The worflow contains options with python and curl API posts ans uses the GitHub Actions Action GitHub API to get data from the GitHub API.
+Refer to workflow [GitHub Minutes Report Curl](.github/workflows/datadog_curl.yml).
   
 ## Problems to solve (see also coomments ins workflow yml file):
 * Correctly configuration Datadog custom metric (name, value etc.)
