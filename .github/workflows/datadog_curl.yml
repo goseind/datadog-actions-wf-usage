@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        WFs: [test.yml, another_test.yml]
+        WFs: [another_test.yml, test.yml]
     steps:
       - name: Get latest timing from GitHub API
         uses: octokit/request-action@v2.1.0

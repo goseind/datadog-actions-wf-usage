@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Question
+      - name: Ask Question
+        id: ask_question
         run: |
-          echo "Does it work !???"
+          echo "Does it work !?"
