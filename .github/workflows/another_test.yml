@@ -16,7 +16,13 @@ jobs:
       - name: Do something time consuming
         run: |
           python -m pip install --upgrade pip
+          sleep 10s
           pip install datadog-api-client
+          sleep 10s
+          pip install matplotlib
+          sleep 10s
+          python -m pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose
+          sleep 10s
       - name: Ask Question
         id: ask_question
         run: |
