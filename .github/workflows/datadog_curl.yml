@@ -41,7 +41,7 @@ jobs:
             "series": [
               {
                 "metric": "github.actions.minutes",
-                "points": [[${NOW}, $latest_total_ms]],
+                "points": [[${NOW}, $latest_total_ms_ubuntu]],
                 "tags": "test:GitHubActionsMinutesReportTEST"
               }
             ]
