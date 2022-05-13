@@ -1,4 +1,4 @@
-name: GitHub Minutes Report
+name: GitHub Minutes Report Curl
 
 on:
   # runs when one of the defined wfs are completed
@@ -12,7 +12,7 @@ jobs:
   updateWorkflowTimings:
     runs-on: ubuntu-latest
     env:
-      WF: datadog.yml # To do: Get all workflows from Repo and execute API request for all of them
+      WF: "test.yml" # To do: Get all workflows from Repo and execute API request for all of them
     steps:
       - name: Get latest timing from GitHub API
         uses: octokit/request-action@v2.1.0
