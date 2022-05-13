@@ -27,7 +27,7 @@ jobs:
       #  run: echo "${{ toJSON(steps.get_latest_timing.outputs.data).billable }}" # Problem: Workflow succeeds but value is not shown in console
 
       - name: Get latest timing from GitHub API (Manual Curl)
-        id: get_latest_timing
+        id: get_latest_timing_2
         run: |
          output = curl \
          -H "Accept: application/vnd.github.v3+json" \
