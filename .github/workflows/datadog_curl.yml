@@ -15,7 +15,7 @@ jobs:
       matrix:
         WFs: [test.yml, another_test.yml]
     steps:
-      - name: Get latest timing from GitHub API
+      - name: Get latest timing from GitHub API (Action)
         uses: octokit/request-action@v2.1.0
         id: get_latest_timing
         with:
@@ -23,8 +23,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Output data from API Request
-        run: echo "${{ toJSON(steps.get_latest_timing.outputs.data).billable }}" # Problem: Workflow succeeds but value is not shown in console
+      #- name: Output data from API Request
+      #  run: echo "${{ toJSON(steps.get_latest_timing.outputs.data).billable }}" # Problem: Workflow succeeds but value is not shown in console
+
+      - name: Get latest timing from GitHub API (Manual Curl)
+        id: get_latest_timing
+        run: |
+         output = curl \
+         -H "Accept: application/vnd.github.v3+json" \
+         -H "Authorization: token $PAT" 
+         https://api.github.com/repos/OWNER/REPO/actions/workflows/WORKFLOW_ID/timing
+         echo $output
+        env:
+          PAT: ${{ secrets.PAT }}
+
+      #- run: echo $output
 
       - name: Post latest timing to Datatdog
         id: post_latest_timing
