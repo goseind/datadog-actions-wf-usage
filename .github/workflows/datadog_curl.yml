@@ -24,7 +24,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Output data from API Request
-        run: echo ${{ toJSON(fromJSON(steps.get_latest_release.outputs.data).billable.UBUNTU.total_ms) }} # Problem: Workflow succeeds but value is not shown in console
+        run: echo ${{ toJSON(fromJSON(steps.get_latest_timing.outputs.data).billable.UBUNTU.total_ms) }} # Problem: Workflow succeeds but value is not shown in console
 
       # - name: Get latest timing from GitHub API (Manual Curl)
       #   id: get_latest_timing_2
