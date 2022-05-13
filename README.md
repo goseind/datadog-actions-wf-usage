@@ -1,15 +1,16 @@
-# datadog-gh-actions
+# Datadog Custom Metric GitHub Actions Minutes
 
-GitHub Action Workflow to send custom metric to Datadog API
+GitHub Action Workflow to send GitHub Actions Minutes Usage to custom metric on Datadog trough its API.
 
 # To do
 
-* Refer to workflow [GitHub Minutes Report](.github/workflows/datadog.yml)
-  * The worflow contains two option with python and curl
-
-Problems to solve (see also coomments ins workflow yml file):
-* Configuration of custom metric (name, value etc.)
-* Post of metric config and data do Datadog API (resonse ok but no data is shown in Datadog metric explorer)
+Refer to workflow [GitHub Minutes Report](.github/workflows/datadog.yml): The worflow contains options with python and curl API posts ans uses the GitHub Actions Action GitHub API to get data from the GitHub API.
+  
+## Problems to solve (see also coomments ins workflow yml file):
+* Correctly configuration Datadog custom metric (name, value etc.)
+* Crate Notebook or Dasboard on Datadog to view metric data
+* Corretly post metric data do Datadog API
+* Find out how the costs are for this metric
 * Collect and iterate trough list of worflows for the current repo and store output value in variable
 * Is workflow usage "timing" actually what we need? Refer to: https://docs.github.com/en/rest/actions/workflows#get-workflow-usage
   ```json
