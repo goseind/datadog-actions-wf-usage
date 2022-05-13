@@ -15,7 +15,7 @@ jobs:
       matrix:
         WFs: [test.yml, another_test.yml]
     steps:
-      - name: Get latest timing from GitHub API (Action)
+      - name: Get latest timing from GitHub API
         uses: octokit/request-action@v2.1.0
         id: get_latest_timing
         with:
@@ -23,21 +23,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Output data from API Request
-        run: echo ${{ toJSON(fromJSON(steps.get_latest_timing.outputs.data).billable.UBUNTU.total_ms) }} # Problem: Workflow succeeds but value is not shown in console
-
-      # - name: Get latest timing from GitHub API (Manual Curl)
-      #   id: get_latest_timing_2
-      #   run: |
-      #    output=$(curl \
-      #    -H "Accept: application/vnd.github.v3+json" \
-      #    -H "Authorization: token $PAT" \
-      #    https://api.github.com/repos/goseind/datadog-gh-actions/actions/workflows/test.yml/timing)
-      #    echo $output
-      #   env:
-      #     PAT: ${{ secrets.PAT }}
-
-      #- run: echo $output
+      - name: Output response check
+        run: echo ${{ toJSON(fromJSON(steps.get_latest_timing.outputs.data).billable.UBUNTU.total_ms) }}
 
       - name: Post latest timing to Datatdog
         id: post_latest_timing
@@ -56,7 +43,7 @@ jobs:
               {
                 "metric": "github.actions.minutes",
                 "points": [[${NOW}, $latest_total_ms_ubuntu]],
-                "tags": "workflow:$tag_workflow_id"
+                "tags": $tag_workflow_id
               }
             ]
           }
