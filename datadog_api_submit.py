@@ -18,7 +18,7 @@ body = MetricsPayload(
                 Point(
                     [
                         datetime.now().timestamp(),
-                        1.1,
+                        1.5,
                     ]
                 ),
             ],
