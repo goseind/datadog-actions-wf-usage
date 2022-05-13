@@ -29,10 +29,10 @@ jobs:
       - name: Get latest timing from GitHub API (Manual Curl)
         id: get_latest_timing_2
         run: |
-         output = curl \
+         output=$(curl \
          -H "Accept: application/vnd.github.v3+json" \
          -H "Authorization: token $PAT" 
-         https://api.github.com/repos/OWNER/REPO/actions/workflows/WORKFLOW_ID/timing
+         https://api.github.com/repos/OWNER/REPO/actions/workflows/WORKFLOW_ID/timing)
          echo $output
         env:
           PAT: ${{ secrets.PAT }}
