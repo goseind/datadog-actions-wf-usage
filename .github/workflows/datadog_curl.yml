@@ -32,7 +32,7 @@ jobs:
          output=$(curl \
          -H "Accept: application/vnd.github.v3+json" \
          -H "Authorization: token $PAT" \
-         https://api.github.com/repos/OWNER/REPO/actions/workflows/WORKFLOW_ID/timing)
+         https://api.github.com/repos/goseind/datadog-gh-actions/actions/workflows/test.yml/timing)
          echo $output
         env:
           PAT: ${{ secrets.PAT }}
