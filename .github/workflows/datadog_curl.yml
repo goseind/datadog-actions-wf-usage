@@ -3,7 +3,7 @@ name: GitHub Minutes Report Curl
 on:
   # runs when one of the defined wfs are completed
   workflow_run:
-    workflows: [*] # To do: Get all workflows from Repo and include them here
+    workflows: [**] # To do: Get all workflows from Repo and include them here
     types:
       - completed
 
