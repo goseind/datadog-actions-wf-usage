@@ -1,0 +1,11 @@
+name: GitHub Actions Minutes Datadog Custom Metric
+author: Domenic Gosein
+description: GitHub Action to send GitHub Actions Minutes Usage to Custom Metric on Datadog.
+
+runs:
+  using: 'docker'
+  image: 'ubuntu-latest'
+
+branding:
+  icon: 'clock'  
+  color: 'orange'
