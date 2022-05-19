@@ -6,6 +6,7 @@ on:
     workflows: [Test WF, Another Test WF] # To do: Get all workflows from repo and include them here
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   # This step gets the timing for each workflow via GitHub API request
