@@ -31,7 +31,7 @@ jobs:
       - name: Post latest timing to Datatdog
         id: post_latest_timing
         run: |
-          min=$(expr $latest_total_ms_ubuntu \ 60000)
+          min=$(($latest_total_ms_ubuntu \ 60000))
           echo $min
           export NOW="$(date +%s)"
           curl -X POST "https://api.datadoghq.eu/api/v1/series" \
