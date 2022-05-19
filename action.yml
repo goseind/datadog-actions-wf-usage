@@ -1,11 +1,60 @@
 name: GitHub Actions Minutes Datadog Custom Metric
 author: Domenic Gosein
 description: GitHub Action to send GitHub Actions Minutes Usage to Custom Metric on Datadog.
-
-runs:
-  using: 'docker'
-  image: 'ubuntu-latest'
-
 branding:
   icon: 'clock'  
   color: 'orange'
+
+inputs:
+  DD_API_KEY:
+    description: 'Your Datadog API Key from GitHub Actions Secrets'
+    required: true
+  DD_APP_KEY:
+    description: 'Your Datadog Application Key from GitHub Actions Secrets'
+    required: true
+  WF:
+    description: 'List of the desired workflows to be monitored (comma seperated)'
+    required: true
+  TAG:
+    description: 'One tag per WF from strategy matrix'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Get latest timing trough GitHub API request
+      uses: octokit/request-action@v2.1.0 # using official request action from octokit
+      id: get_latest_timing
+      with:
+        route: GET /repos/${{ github.repository }}/actions/workflows/${{ inputs.WF }}/timing
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: API Output response check
+      shell: bash
+      run: echo ${{ toJSON(fromJSON(steps.get_latest_timing.outputs.data).billable.UBUNTU.total_ms) }}
+
+    - name: Calculate and post latest timing to Datatdog as Custom Metric
+      shell: bash
+      id: post_latest_timing
+      run: |
+          min=$(($latest_total_ms_ubuntu / 60000))
+          echo $min
+          export NOW="$(date +%s)"
+          curl -X POST "https://api.datadoghq.eu/api/v1/series" \
+          -H "Content-Type: text/json" \
+          -H "DD-API-KEY: $DD_API_KEY" \
+          -d @- << EOF
+          {
+            "series": [
+              {
+                "metric": "github.actions.minutes",
+                "points": [[${NOW}, $min]],
+                "tags": "workflow:$tag_workflow_id",
+                "type": "gauge"
+              }
+            ]
+          }
+          EOF
+      env:
+          latest_total_ms_ubuntu: ${{ toJSON(fromJSON(steps.get_latest_timing.outputs.data).billable.UBUNTU.total_ms) }}

@@ -12,13 +12,13 @@ jobs:
   # This step gets the timing for each workflow via GitHub API request
   updateWorkflowTimings:
     runs-on: ubuntu-latest
-    # Runs for each workflow
+    # Runs for each workflow defined below
     strategy:
       matrix:
-        WFs: [another_test.yml, test.yml, datadog.yml] # To do: Get all workflows from repo and include them here
+        WFs: [another_test.yml, test.yml, datadog.yml]
     steps:
-      - name: Get latest timing from GitHub API
-        uses: octokit/request-action@v2.1.0
+      - name: Get latest timing trough GitHub API request
+        uses: octokit/request-action@v2.1.0 # using official request action from octokit
         id: get_latest_timing
         with:
           route: GET /repos/${{ github.repository }}/actions/workflows/${{ matrix.WFs }}/timing
@@ -28,7 +28,7 @@ jobs:
       - name: API Output response check
         run: echo ${{ toJSON(fromJSON(steps.get_latest_timing.outputs.data).billable.UBUNTU.total_ms) }}
 
-      - name: Post latest timing to Datatdog
+      - name: Calculate and post latest timing to Datatdog as Custom Metric
         id: post_latest_timing
         run: |
           min=$(($latest_total_ms_ubuntu / 60000))
