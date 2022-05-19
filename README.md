@@ -1,4 +1,4 @@
-# Hello world docker action
+# Datadog Custom Metric for GitHub Actions Workflow Usage
 
 GitHub Action to send minutes usage per workflow to a custom metric in Datadog. Here is an example of how it looks like in Datadog:
 
