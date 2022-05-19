@@ -52,3 +52,6 @@ jobs:
           DD_APP_KEY: ${{ secrets.DATADOG_APPLICATION_KEY }}
           latest_total_ms_ubuntu: ${{ toJSON(fromJSON(steps.get_latest_timing.outputs.data).billable.UBUNTU.total_ms) }} / 60000
           tag_workflow_id: ${{ matrix.WFs }} # Creates a tag on datadog for each workflow
+      
+      - name: Check value
+        run: echo ${{latest_total_ms_ubuntu}}
