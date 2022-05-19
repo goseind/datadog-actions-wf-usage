@@ -35,7 +35,7 @@ runs:
       uses: octokit/request-action@v2.1.0 # using official request action from octokit
       id: get_latest_timing
       with:
-        route: GET /repos/${{ inputs.repo_path }}/actions/workflows/${{ inputs.WF }}/timing
+        route: GET /repos/${{ inputs.repo_path }}/actions/workflows/${{ inputs.workflows }}/timing
       env:
         GITHUB_TOKEN: ${{ inputs.github_tk }}
 
