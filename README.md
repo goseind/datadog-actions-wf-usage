@@ -1,10 +1,10 @@
 # Hello world docker action
 
-GitHub Action to send minutes usage per workflow to a custom metric in Datadog. Here is an example of how it looks in Datadog:
+GitHub Action to send minutes usage per workflow to a custom metric in Datadog. Here is an example of how it looks like in Datadog:
 
 ![Datadog Example](example_datadog.png)
 
-You'll be able to see the usage for the current billing period per workflow and in total across all defined workflows.
+You'll be able to see the **usage for the current billing period** per workflow and in total across all defined workflows.
 
 ## Inputs
 
@@ -50,7 +50,7 @@ jobs:
         WFs: [WF Filename One, WF Filename Two] # Runs for each workflow defined in the brackets
     steps:
       - name: Use my action
-        uses: goseind/datadog-gh-actions@v1.0.1
+        uses: goseind/datadog-gh-actions@v1.0.0
         with:
           api_key: ${{ secrets.DATADOG_API_KEY }}
           app_key: ${{ secrets.DATADOG_APPLICATION_KEY }}
