@@ -3,7 +3,7 @@ name: GitHub Minutes Report Curl
 on:
   # Runs when one of the listed workflows are completed
   workflow_run:
-    workflows: [Test WF, Another Test WF, GitHub Minutes Report Curl] # To do: Get all workflows from repo and include them here
+    workflows: [Test WF, Another Test WF] # To do: Get all workflows from repo and include them here
     types:
       - completed
 
