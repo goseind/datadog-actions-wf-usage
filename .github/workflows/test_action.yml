@@ -17,7 +17,7 @@ jobs:
         WFs: [another_test.yml, test.yml, datadog.yml]
     steps:
       - name: Use my action
-        uses: goseind/datadog-gh-actions@v1
+        uses: goseind/datadog-gh-actions@v1.0.0-beta
         with:
           api_key: ${{ secrets.DATADOG_API_KEY }}
           app_key: ${{ secrets.DATADOG_APPLICATION_KEY }}
