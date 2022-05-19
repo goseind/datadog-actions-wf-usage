@@ -19,6 +19,8 @@ jobs:
       - name: Use my action
         uses: goseind/datadog-gh-actions@v1
         with:
-          DD_API_KEY: ${{ secrets.DATADOG_API_KEY }}
-          DD_APP_KEY: ${{ secrets.DATADOG_APPLICATION_KEY }}
+          api_key: ${{ secrets.DATADOG_API_KEY }}
+          app_key: ${{ secrets.DATADOG_APPLICATION_KEY }}
+          workflows: ${{ matrix.WFs }}
+          repo_path: ${{ github.repository }}
           tag_workflow_id: ${{ matrix.WFs }}
