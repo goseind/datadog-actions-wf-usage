@@ -2,19 +2,17 @@ name: Test Action
 
 on:
   workflow_run:
-    workflows: [Test WF, Another Test WF]
+    workflows: [Test WF]
     types:
       - completed
   workflow_dispatch:
 
 jobs:
-  # This step gets the timing for each workflow via GitHub API request
   updateWorkflowTimings:
     runs-on: ubuntu-latest
-    # Runs for each workflow defined below
     strategy:
       matrix:
-        WFs: [another_test.yml, test.yml, datadog.yml]
+        WFs: [test.yml] # Runs for each workflow defined in the brackets
     steps:
       - name: Use my action
         uses: goseind/datadog-gh-actions@v1.0.0-beta

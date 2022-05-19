@@ -1,8 +1,8 @@
-name: GitHub Actions Minutes Datadog Custom Metric
+name: Workflow Usage Datadog Custom Metric
 
 author: Domenic Gosein
 
-description: GitHub Action to send GitHub Actions Minutes Usage to Custom Metric on Datadog.
+description: GitHub Action to send minutes usage per workflow to a custom metric in Datadog.
 
 branding:
   icon: 'clock'  
@@ -10,40 +10,40 @@ branding:
 
 inputs:
   api_key:
-    description: 'Your Datadog API Key from GitHub Actions Secrets'
+    description: 'Datadog API key e.g. from GitHub Actions Secrets'
     required: true
   app_key:
-    description: 'Your Datadog Application Key from GitHub Actions Secrets'
+    description: 'Datadog Application Key e.g. from GitHub Actions Secrets.'
     required: true
   repo_path:
-    description: 'Repository path'
+    description: 'Repository path e.g. from standard variable.'
     required: true
   wf:
-    description: 'List of the desired workflows to be monitored (comma seperated)'
+    description: 'Workflow name from strategy matrix.'
     required: true
   tag_workflow_id:
-    description: 'One tag per WF from strategy matrix'
+    description: 'Workflow name from strategy matrix.'
     required: true
   github_tk:
-    description: 'Github Token'
+    description: 'Github Actions Token from GitHub Actions Secrets.'
     required: true
 
 runs:
   using: 'composite'
   steps:
     - name: Get latest timing trough GitHub API request
-      uses: octokit/request-action@v2.1.0 # using official request action from octokit
+      uses: octokit/request-action@v2.1.0
       id: get_latest_timing
       with:
         route: GET /repos/${{ inputs.repo_path }}/actions/workflows/${{ inputs.wf }}/timing
       env:
         GITHUB_TOKEN: ${{ inputs.github_tk }}
 
-    - name: API Output response check
+    - name: Value check received from API request
       shell: bash
       run: echo ${{ toJSON(fromJSON(steps.get_latest_timing.outputs.data).billable.UBUNTU.total_ms) }}
 
-    - name: Calculate and post latest timing to Datatdog as Custom Metric
+    - name: Calculate and post latest timing in minutes to Datatdog as a Custom Metric
       shell: bash
       id: post_latest_timing
       run: |
@@ -66,8 +66,7 @@ runs:
           }
           EOF
       env:
-        # Datadog API and Application Keys (stored in GitHub Actions Secrets)
         DD_API_KEY: ${{ inputs.api_key }}
         DD_APP_KEY: ${{ inputs.app_key }}
         latest_total_ms_ubuntu: ${{ toJSON(fromJSON(steps.get_latest_timing.outputs.data).billable.UBUNTU.total_ms) }}
-        tag_workflow_id: ${{ inputs.wf }} # Creates a tag on datadog for each workflow
+        tag_workflow_id: ${{ inputs.wf }}

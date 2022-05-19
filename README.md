@@ -1,50 +1,61 @@
-# Datadog Custom Metric for GitHub Actions Minutes
-GitHub Action Workflow to send GitHub Actions Minutes Usage to Custom Metric on Datadog.
+# Hello world docker action
 
-## Implementation
-This actions has been implemented with three options for the API request:
-* [GitHub Minutes Report Curl](.github/workflows/datadog_curl.yml)
-* [GitHub Minutes Report Python](.github/workflows/datadog_python.yml) *(not ready yet)*
-* [GitHub Minutes Report Curl](.github/workflows/datadog_go.yml) *(not ready yet)*
+GitHub Action to send minutes usage per workflow to a custom metric in Datadog. Here is an example of how it looks in Datadog:
 
-## Usage
+![Datadog Example](example_datadog.png)
 
-1. Store you [Datadog API and Application Key]() as a [GitHub Actions Secret]()
-2. Enter the workflows you want to monitor by this action here:
-   ```yml
-   workflows: [Test WF, Another Test WF]
-   ```
-   and here:
-   ```yml
-   WFs: [another_test.yml, test.yml] 
-   ```
+You'll be able to see the usage for the current billing period per workflow and in total across all defined workflows.
 
-## Problems to solve (see also coomments ins workflow yml file):
-- [ ] Check with Datadog wether Custom Metric is defined corretly and find out about costs
-- [ ] Crate Notebook or Dasboard on Datadog to view mtric data
-- [ ] Collect and iterate trough list of worflows for the current repo and store output value in variable
-- [ ] Is workflow usage "timing" actually what we need? Refer to: https://docs.github.com/en/rest/actions/workflows#get-workflow-usage
+## Inputs
 
-  ```json
-  {
-  "billable": {
-    "UBUNTU": {
-      "total_ms": 180000
-    },
-    "MACOS": {
-      "total_ms": 240000
-    },
-    "WINDOWS": {
-      "total_ms": 300000
-        }
-    }
-  }
-  ```
+### `api_key`
 
-## Useful Information
-* https://github.com/marketplace/actions/github-api-request
-* https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
-* https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_run
-* https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
-* https://docs.datadoghq.com/api/latest/metrics/#submit-metrics
-* https://docs.datadoghq.com/api/latest/?code-lang=python
+**Required** Datadog API key e.g. from GitHub Actions Secrets.
+
+### `app_key`
+
+**Required** Datadog Application Key e.g. from GitHub Actions Secrets.
+
+### `repo_path`
+
+**Required** Repository path e.g. from standard variable.
+
+### `wf`
+
+**Required** Workflow name from strategy matrix.
+
+### `tag_workflow_id`
+
+**Required** Workflow name from strategy matrix.
+
+### `github_tk`
+
+**Required** Github Actions Token from GitHub Actions Secrets.
+
+## Example usage
+
+```yml
+on:
+  workflow_run:
+    workflows: [WF Name One, WF Name Two] # Runs when one of the workflow defined in the brackets is run and completed
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  updateWorkflowTimings:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        WFs: [WF Filename One, WF Filename Two] # Runs for each workflow defined in the brackets
+    steps:
+      - name: Use my action
+        uses: goseind/datadog-gh-actions@v1.0.1
+        with:
+          api_key: ${{ secrets.DATADOG_API_KEY }}
+          app_key: ${{ secrets.DATADOG_APPLICATION_KEY }}
+          repo_path: ${{ github.repository }}
+          tag_workflow_id: ${{ matrix.WFs }}
+          wf: ${{ matrix.WFs }}
+          github_tk: ${{ secrets.GITHUB_TOKEN }}
+```
