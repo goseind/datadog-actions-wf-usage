@@ -2,8 +2,7 @@ name: Test Action
 
 on:
   workflow_run:
-    workflow_dispatch:
-      - '**'
+    workflows: [Test WF, Another Test WF]
     types:
       - completed
   workflow_dispatch:
