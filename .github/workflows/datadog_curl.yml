@@ -3,7 +3,7 @@ name: GitHub Minutes Report Curl
 on:
   # Runs when one of the listed workflows are completed
   workflow_run:
-    workflows: [Test WF, Another Test WF] # To do: Get all workflows from repo and include them here
+    workflows: [Test WF, Another Test WF, GitHub Minutes Report Curl] # To do: Get all workflows from repo and include them here
     types:
       - completed
 
@@ -14,7 +14,7 @@ jobs:
     # Runs for each workflow
     strategy:
       matrix:
-        WFs: [another_test.yml, test.yml] # To do: Get all workflows from repo and include them here
+        WFs: [another_test.yml, test.yml, datadog.yml] # To do: Get all workflows from repo and include them here
     steps:
       - name: Get latest timing from GitHub API
         uses: octokit/request-action@v2.1.0
