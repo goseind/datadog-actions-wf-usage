@@ -26,4 +26,4 @@ jobs:
       - name: Ask Question
         id: ask_question
         run: |
-          echo "Does it work now !?"
+          echo "Does it work now !??"
