@@ -21,7 +21,7 @@ jobs:
         with:
           api_key: ${{ secrets.DATADOG_API_KEY }}
           app_key: ${{ secrets.DATADOG_APPLICATION_KEY }}
-          wflows: ${{ matrix.WFs }}
-          github_tk: ${{ secrets.GITHUB_TOKEN }}
           repo_path: ${{ github.repository }}
           tag_workflow_id: ${{ matrix.WFs }}
+          wf: ${{ matrix.WFs }}
+          github_tk: ${{ secrets.GITHUB_TOKEN }}
