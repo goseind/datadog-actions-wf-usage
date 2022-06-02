@@ -37,9 +37,11 @@ You'll be able to see the **usage for the current billing period** per workflow 
 ```yml
 on:
   workflow_run:
-    workflows: [WF Name One, WF Name Two] # Runs when one of the workflow defined in the brackets is run and completed
+    workflows: [Worfklow One, Workflow Two] # Runs when one of the workflow defined in the brackets is run and completed
     types:
       - completed
+  schedule:
+    - cron: 30 23 * * 1,3,5 # At 23:30 on Monday, Wednesday, and Friday
   workflow_dispatch:
 
 jobs:
@@ -47,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        WFs: [WF Filename One, WF Filename Two] # Runs for each workflow defined in the brackets
+        WFs: [workflow_one.yml, workflow_two.yml] # Runs for each workflow defined in the brackets
     steps:
       - name: Use my action
         uses: goseind/datadog-gh-actions@v1.0.0
